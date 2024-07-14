@@ -1,21 +1,20 @@
-package software_libre.api_luna.dto;
+package software_libre.api_luna.loginData;
 
 import lombok.*;
 import software_libre.api_luna.entity.Rol;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class RegisterRequest {
 
+    private String username;
     private String email;
     private String password;
-
-    private List<String> roles;
-
+    private String activo;
+    private List<Rol> roles;
 }

@@ -1,15 +1,18 @@
 package software_libre.api_luna.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.*;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +20,8 @@ public class Rol {
 
     private String nombre;
     private String activo;
+
+    //Relaciones
+    @ManyToMany(mappedBy = "roles")
+    private List<Usuario> usuarios = new ArrayList<>();
 }
