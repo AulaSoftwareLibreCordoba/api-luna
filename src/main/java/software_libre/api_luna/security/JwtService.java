@@ -48,7 +48,7 @@ public class JwtService {
                 .claims(customClaim)
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 60000))
+                .expiration(new Date(System.currentTimeMillis() + 600000))
                 .signWith(getKey())
                 .compact();
     }
@@ -58,23 +58,23 @@ public class JwtService {
         return Keys.hmacShaKeyFor(KeyBytes);
     }
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+    public String extractEmail(String token) {
+        return extractClaim(token, claims -> claims.get("email", String.class));
     }
 
-    public boolean isValid(String token, UserDetails user) {
-        String username = extractUsername(token);
+    public boolean isValid(String token, String user) {
+        String username = extractEmail(token);
 
 
 
-        return (username.equals(user.getUsername())) && !isTokenExpired(token);
+        return (username.equals(user)) && !isTokenExpired(token);
     }
 
     public boolean isValidRefreshToken(String token, Usuario user) {
-        String username = extractUsername(token);
+        String username = extractEmail(token);
 
 
-        return (username.equals(user.getUsername())) && !isTokenExpired(token);
+        return (username.equals(user.getEmail())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

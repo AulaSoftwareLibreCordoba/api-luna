@@ -16,5 +16,4 @@ public class RegisterRequest {
     private String email;
     private String password;
     private String activo;
-    private List<Rol> roles;
 }
