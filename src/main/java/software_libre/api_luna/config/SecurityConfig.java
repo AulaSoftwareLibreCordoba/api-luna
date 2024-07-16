@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(h -> {
                     h.requestMatchers(HttpMethod.POST, "/authorization/login").permitAll();
                     h.requestMatchers(HttpMethod.POST, "/authorization/register").permitAll();//TODO: si el controlador no crece mas lo dejamos como/* y un solo filtro
+                    h.requestMatchers(HttpMethod.GET, "/test").hasRole("admin");
                     h.anyRequest().authenticated();
                 })
                 .userDetailsService(userDetailsServiceImp)
