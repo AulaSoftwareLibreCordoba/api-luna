@@ -30,4 +30,5 @@ public class AuthorizeController {
             return ResponseEntity.status(401).body(e.getMessage());
         }
     }
+
 }

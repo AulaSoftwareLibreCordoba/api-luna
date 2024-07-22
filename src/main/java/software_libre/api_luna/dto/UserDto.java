@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 public class UserDto {
 
     private String email;
-    private String password;
 
     private List<String> roles;
 
