@@ -37,9 +37,10 @@ public class SecurityConfig {
                 .csrf(c -> c.disable())//csrf no lo necesitamos al ser puro back
                 .sessionManagement((s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)))//Control de sesion, no guardamos el estado ya que vamos a trabajar con token
                 .authorizeHttpRequests(h -> {
+                    h.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll();
                     h.requestMatchers(HttpMethod.POST, "/authorization/login").permitAll();
                     h.requestMatchers(HttpMethod.POST, "/authorization/register").permitAll();//TODO: si el controlador no crece mas lo dejamos como/* y un solo filtro
-                    h.requestMatchers(HttpMethod.GET, "/test/*").permitAll();
+                    //h.requestMatchers(HttpMethod.GET, "/test/*").permitAll();
                     h.anyRequest().authenticated();
                 })
                 .userDetailsService(userDetailsServiceImp)

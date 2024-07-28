@@ -52,5 +52,4 @@ public class AuthorizeService {
         throw new EntityNotFoundException("Usuario no valido");//Personalizar excepcion
     }
 
-
 }
