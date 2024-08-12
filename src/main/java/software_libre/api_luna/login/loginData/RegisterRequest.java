@@ -1,5 +1,4 @@
-package software_libre.api_luna.loginData;
-
+package software_libre.api_luna.login.loginData;
 
 import lombok.*;
 
@@ -8,7 +7,10 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
+public class RegisterRequest {
+
+    private String username;
     private String email;
     private String password;
+    private String activo;
 }

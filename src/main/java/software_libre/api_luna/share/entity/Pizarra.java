@@ -1,23 +1,28 @@
-package software_libre.api_luna.entity;
+package software_libre.api_luna.share.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class Noticia {
+public class Pizarra {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-    private String email;
-    private String password;//Esto tenemos que ver como guardarlo encriptado
+    private String nombre;
+
+    private String encabezado;
+    private String texto;
+
+    private String fechaValidez;
     private String activo;
+
 }

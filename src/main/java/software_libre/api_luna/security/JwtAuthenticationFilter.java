@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 
 import org.springframework.web.filter.OncePerRequestFilter;
-import software_libre.api_luna.repository.IUserRepository;
+import software_libre.api_luna.share.repository.IUserRepository;
 
 import java.io.IOException;
 

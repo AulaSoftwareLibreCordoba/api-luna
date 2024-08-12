@@ -1,4 +1,4 @@
-package software_libre.api_luna.entity;
+package software_libre.api_luna.share.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,6 +20,6 @@ public class Rol {
     private String activo;
 
     //Relaciones
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private List<Usuario> usuarios = new ArrayList<>();
 }

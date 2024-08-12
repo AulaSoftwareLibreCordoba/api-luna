@@ -1,4 +1,4 @@
-package software_libre.api_luna.controller;
+package software_libre.api_luna.test;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

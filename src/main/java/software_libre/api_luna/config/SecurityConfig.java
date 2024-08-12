@@ -41,7 +41,8 @@ public class SecurityConfig {
                     h.requestMatchers(HttpMethod.POST, "/authorization/login").permitAll();
                     h.requestMatchers(HttpMethod.POST, "/authorization/register").permitAll();//TODO: si el controlador no crece mas lo dejamos como/* y un solo filtro
                     //h.requestMatchers(HttpMethod.GET, "/test/*").permitAll();
-                    h.anyRequest().authenticated();
+                    //h.anyRequest().authenticated();
+                    h.anyRequest().permitAll();//Se queda inhabilitado la seguridad durante el desarrollo
                 })
                 .userDetailsService(userDetailsServiceImp)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

@@ -5,9 +5,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import software_libre.api_luna.entity.Usuario;
+import software_libre.api_luna.share.entity.Usuario;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -38,7 +37,7 @@ public class JwtService {
 
         claims.put("roles", roles);
         claims.put("email", user.getEmail());
-        claims.put("name", user.getUsername());
+        //claims.put("name", user.getUsername());
 
         return generateToken(claims, user.getUsername());
     }

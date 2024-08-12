@@ -1,9 +1,6 @@
-package software_libre.api_luna.entity;
+package software_libre.api_luna.share.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,4 +18,12 @@ public class EventoDenuncia {
     private LocalDateTime fechaCreacion;
 
     private String activo;
+
+    @ManyToOne
+    @JoinColumn(name = "denuncia_id", nullable = false)
+    private Denuncia denuncia;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 }

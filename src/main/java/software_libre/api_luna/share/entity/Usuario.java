@@ -1,4 +1,4 @@
-package software_libre.api_luna.entity;
+package software_libre.api_luna.share.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,10 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,4 +45,8 @@ public class Usuario implements UserDetails {
                  .map(r -> new SimpleGrantedAuthority(("ROLE_" + r.getNombre())))
                  .collect(Collectors.toList());
     }
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<EventoDenuncia> denuncias;
+
 }

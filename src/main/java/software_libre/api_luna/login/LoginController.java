@@ -1,19 +1,18 @@
-package software_libre.api_luna.controller;
+package software_libre.api_luna.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-import software_libre.api_luna.loginData.LoginRequest;
-import software_libre.api_luna.loginData.RegisterRequest;
-import software_libre.api_luna.service.AuthorizeService;
+import software_libre.api_luna.login.loginData.LoginRequest;
+import software_libre.api_luna.login.loginData.RegisterRequest;
 
 @RestController
-@RequestMapping("/authorization")
-public class AuthorizeController {
+@RequestMapping("/login")
+public class LoginController {
 
 
     @Autowired
-    private AuthorizeService service;
+    private LoginService service;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest){
@@ -21,7 +20,7 @@ public class AuthorizeController {
         return ResponseEntity.status(200).body(result);//TODO: Esto le falta validaciones caso de error etc
     }
 
-    @PostMapping("/login")
+    @PostMapping()
     public ResponseEntity<?> login (@RequestBody LoginRequest loginRequest){
         try {
             String token = service.authenticate(loginRequest);
