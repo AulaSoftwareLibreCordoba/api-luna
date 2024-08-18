@@ -6,12 +6,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Pizarra {
+public class Noticia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +24,7 @@ public class Pizarra {
     private String encabezado;
     private String texto;
 
-    private String fechaValidez;
+    private LocalDateTime fechaValidez;
     private String activo;
 
 }
