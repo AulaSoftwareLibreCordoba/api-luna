@@ -11,6 +11,8 @@ import java.util.Optional;
 @Service
 public class ServiceDenuncia {
 
+
+
     @Autowired
     private RepositoryDenuncia repositoryDenuncia;
 
