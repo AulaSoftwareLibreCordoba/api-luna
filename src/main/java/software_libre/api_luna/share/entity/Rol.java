@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Getter
 @Setter
 @Entity
@@ -21,5 +23,7 @@ public class Rol {
 
     //Relaciones
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<Usuario> usuarios = new ArrayList<>();
+    
 }

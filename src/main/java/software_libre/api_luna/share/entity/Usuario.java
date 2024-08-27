@@ -6,6 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -37,7 +39,8 @@ public class Usuario implements UserDetails {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private List<Rol> roles = new ArrayList<>();
-
+    @JsonManagedReference
+    
     //Adaptamos la entidad roles con todos los posibles roles que existan
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
