@@ -3,18 +3,18 @@ package software_libre.api_luna.denuncia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import software_libre.api_luna.share.entity.Denuncia;
-import software_libre.api_luna.share.repository.RepositoryDenuncia;
+import software_libre.api_luna.share.repository.DenunciaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServiceDenuncia {
+public class DenunciaService {
 
 
 
     @Autowired
-    private RepositoryDenuncia repositoryDenuncia;
+    private DenunciaRepository repositoryDenuncia;
 
     public Denuncia guardarDenuncia(Denuncia denuncia){
         return repositoryDenuncia.save(denuncia);

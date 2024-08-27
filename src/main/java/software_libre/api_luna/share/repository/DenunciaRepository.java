@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import software_libre.api_luna.share.entity.Denuncia;
 
 @Repository
-public interface RepositoryDenuncia extends JpaRepository<Denuncia, Long> {
+public interface DenunciaRepository extends JpaRepository<Denuncia, Long> {
 }

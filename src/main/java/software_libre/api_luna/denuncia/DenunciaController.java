@@ -12,12 +12,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/denuncias")
-public class ControllerDenuncia {
+public class DenunciaController {
 
     @Autowired
-    private ServiceDenuncia serviceDenuncia;
+    private DenunciaService serviceDenuncia;
 
-    private static final Logger logger = LoggerFactory.getLogger(ServiceDenuncia.class);
+    private static final Logger logger = LoggerFactory.getLogger(DenunciaService.class);
 
     @PostMapping
     public ResponseEntity<Denuncia> guardarDenuncia(@RequestBody Denuncia denuncia){
