@@ -16,54 +16,49 @@ public class UsuarioController {
   private UsuarioService usuarioService;
 
   @PostMapping
-  public ResponseEntity<Usuario> guardarUsuario(@RequestBody Usuario Usuario){
-      Usuario savedUsuario = usuarioService.guardarUsuario(Usuario);
-      return ResponseEntity.ok(savedUsuario);
-  }
-
-  @DeleteMapping
-  public ResponseEntity<Void> borrarUsuarioPorUsuario(@RequestBody Usuario Usuario){
-      usuarioService.borrarUsuarioPorUsuario(Usuario);
-      return ResponseEntity.noContent().build();
+  public ResponseEntity<Usuario> guardarUsuario(@RequestBody Usuario usuario) {
+    Usuario savedUsuario = usuarioService.guardarUsuario(usuario);
+    return ResponseEntity.ok(savedUsuario);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> borrarUsuarioPorId(@PathVariable Long id){
-      if(encontrarUsuario(id)){
-          usuarioService.borrarUsuarioPorId(id);
-          return ResponseEntity.noContent().build();
-      } else {
-          return ResponseEntity.notFound().build();
-      }
+  public ResponseEntity<Void> borrarUsuarioPorId(@PathVariable Long id) {
+    if (encontrarUsuario(id)) {
+      usuarioService.borrarUsuarioPorId(id);
+      return ResponseEntity.noContent().build();
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 
   @GetMapping
-  public List<Usuario> encontrarTodasLasUsuarios(){
-      return usuarioService.encontrarTodosLosUsuarios();
+  public List<Usuario> encontrarTodasLasUsuarios() {
+    return usuarioService.encontrarTodosLosUsuarios();
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Usuario> encontrarUsuarioPorId(@PathVariable Long id){
-      if(encontrarUsuario(id)){
-          Optional<Usuario> Usuario = usuarioService.encontrarUsuarioPorId(id);
-          return ResponseEntity.ok(Usuario.get());
-      } else {
-          return ResponseEntity.notFound().build();
-      }
+  public ResponseEntity<Usuario> encontrarUsuarioPorId(@PathVariable Long id) {
+    if (encontrarUsuario(id)) {
+      Optional<Usuario> usuario = usuarioService.encontrarUsuarioPorId(id);
+      return ResponseEntity.ok(usuario.get());
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Usuario> modificarUsuario(@PathVariable Long id, @RequestBody Usuario Usuario){
-      if(encontrarUsuario(id)){
-          Usuario UsuarioModificada = usuarioService.actualizarUsuario(id, Usuario);
-          return ResponseEntity.ok(UsuarioModificada);
-      } else {
-          return ResponseEntity.notFound().build();
-      }
+  public ResponseEntity<Usuario> modificarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+    if (encontrarUsuario(id)) {
+      Usuario usuarioModificado = usuarioService.actualizarUsuario(id, usuario);
+      return ResponseEntity.ok(usuarioModificado);
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 
-  private boolean encontrarUsuario(Long id){
-      Optional<Usuario> Usuario = usuarioService.encontrarUsuarioPorId(id);
-      return Usuario.isPresent();
+  private boolean encontrarUsuario(Long id) {
+    Optional<Usuario> usuario = usuarioService.encontrarUsuarioPorId(id);
+    return usuario.isPresent();
   }
 }
+

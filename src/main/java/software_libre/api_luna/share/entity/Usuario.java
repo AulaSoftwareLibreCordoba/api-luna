@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class Usuario implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String username;
@@ -49,7 +49,16 @@ public class Usuario implements UserDetails {
                  .collect(Collectors.toList());
     }
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<EventoDenuncia> denuncias;
+    private List<EventoDenuncia> eventoDenuncias;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Noticia> noticias;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Denuncia> denuncias;
 
 }

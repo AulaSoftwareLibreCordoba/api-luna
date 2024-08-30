@@ -3,6 +3,7 @@ package software_libre.api_luna.denuncia;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import software_libre.api_luna.share.entity.Denuncia;
@@ -16,8 +17,6 @@ public class DenunciaController {
 
     @Autowired
     private DenunciaService serviceDenuncia;
-
-    private static final Logger logger = LoggerFactory.getLogger(DenunciaService.class);
 
     @PostMapping
     public ResponseEntity<Denuncia> guardarDenuncia(@RequestBody Denuncia denuncia){
@@ -42,9 +41,13 @@ public class DenunciaController {
     }
 
     @GetMapping
-    public List<Denuncia> encontrarTodasLasDenuncias(){
-        logger.info("Se han buscado todas las denuncias");
-        return serviceDenuncia.encontrarTodasLasDenuncias();
+    public ResponseEntity<List<Denuncia>> encontrarTodasLasDenuncias() {
+        try {
+            List<Denuncia> denuncias = serviceDenuncia.encontrarTodasLasDenuncias();
+            return ResponseEntity.ok(denuncias);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/{id}")

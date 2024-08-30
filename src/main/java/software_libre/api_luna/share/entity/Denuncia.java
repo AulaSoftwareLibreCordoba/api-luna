@@ -1,5 +1,6 @@
 package software_libre.api_luna.share.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,5 +27,11 @@ public class Denuncia {
     private String activo;
 
     @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<EventoDenuncia> denuncias;
+    private List<EventoDenuncia> eventoDenuncias;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonBackReference
+    private Usuario usuario;
+
 }

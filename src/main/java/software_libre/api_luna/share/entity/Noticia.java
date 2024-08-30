@@ -1,9 +1,7 @@
 package software_libre.api_luna.share.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -27,4 +25,8 @@ public class Noticia {
     private LocalDateTime fechaValidez;
     private String activo;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonBackReference
+    private Usuario usuario;
 }
