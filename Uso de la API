@@ -1,0 +1,72 @@
+Una vez ya teniendo la API iniciada (leer Readme en github) la API se divide de la siguiente forma:
+
+1. Denuncias:
+
+Petición GET:
+Para las peticiones get se pueden hacer mediante la url http://localhost:8080/denuncias para que nos muestre todas las denuncias existentes o
+http://localhost:8080/denuncias/{id} para que nos muestre la información de una denuncia en específico
+
+Petición POST:
+Para la petición post utilizaremos la url http://localhost:8080/denuncias y en el body le enviaremos un JSON con la siguiente estructura
+{
+    "resumen": "",
+    "fechaCreacion": "",
+    "validado": "",
+    "activo": "",
+    "eventoDenuncias": [],
+    "usuario":{"id":}
+}
+
+Petición PUT:
+En la petición PUT podemos cambiar tanto el resumen, validado y activo, para ello utilizaremos la url http://localhost:8080/denuncias/{id} y utilizamos
+un JSON como:
+{
+    "resumen": "",
+    "validado": "",
+    "activo": ""
+}
+
+La petición DELETE:
+Esta petición podemos hacerla de dos maneras tanto enviando la id de la denuncia mediante la url http://localhost:8080/denuncias/{id} como con una instancia
+de la denuncia en caso de que dispongas de ella con la url http://localhost:8080/denuncias y petición tipo denuncias
+
+
+
+
+2. Usuarios
+Dentro de los usuarios hay que aclarar que si es la primera vez que corres la aplicación se creará un primer usuario con id 1 además de que se crearán los
+roles predefinidos ADMIN con id 1 y USER con id 2
+
+Petición GET:
+En la petición get utilizaremos la URL http://localhost:8080/users para mostrar toda la lista de usuarios y la URL http://localhost:8080/users/{id} en caso
+de que queramos ver un usuario en concreto
+
+Petición POST:
+En la petición post utilizamos la URL http://localhost:8080/users y utilizamos el JSON con el siguiente formato:
+{
+  "username": "",
+  "email": "",
+  "password": "",
+  "activo": "",
+  "roles": [
+    {
+      "id":
+    }
+    // Aqui podemos agregar otra llave en caso de ponerle otro rol
+  ]
+}
+
+Petición PUT:
+Para la petición put utilizamos la url http://localhost:8080/users/{id} y podemos cambiar los siguientes campos:
+{
+  "username": "",
+  "email": "",
+  "password": "",
+  "activo": ""
+}
+
+La petición DELETE:
+En la petición delete utilizamos como en denuncias tanto una instancia entera como su id, para borrar un usuario solo con su id utilizamos la URL
+http://localhost:8080/users/{id} pero si le pasamos la instancia es con http://localhost:8080/users
+
+
