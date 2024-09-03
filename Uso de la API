@@ -11,17 +11,32 @@ Para la petición post utilizaremos la url http://localhost:8080/denuncias y en 
 {
     "resumen": "",
     "fechaCreacion": "",
+    "denunciantes":"",
+    "curso": ,
+    "letra": ,
     "validado": "",
     "activo": "",
     "eventoDenuncias": [],
     "usuario":{"id":}
 }
 
+**
+Enums:
+Curso                       Letra                    Números
+  PRIMERO,                      A,                        0,
+  SEGUNDO,                      B,                        1,
+  TERCERO,                      C,                        2,
+  CUARTO                        D                         3
+
+
 Petición PUT:
 En la petición PUT podemos cambiar tanto el resumen, validado y activo, para ello utilizaremos la url http://localhost:8080/denuncias/{id} y utilizamos
 un JSON como:
 {
     "resumen": "",
+    "denunciantes":"",
+    "curso": ,
+    "letra": ,
     "validado": "",
     "activo": ""
 }
