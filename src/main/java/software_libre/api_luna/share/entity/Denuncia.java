@@ -1,6 +1,7 @@
 package software_libre.api_luna.share.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import software_libre.api_luna.share.enums.Curso;
@@ -34,6 +35,7 @@ public class Denuncia {
 
     private String activo;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EventoDenuncia> eventoDenuncias;
 

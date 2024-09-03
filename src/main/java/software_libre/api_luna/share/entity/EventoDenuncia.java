@@ -22,6 +22,7 @@ public class EventoDenuncia {
 
     @ManyToOne
     @JoinColumn(name = "denuncia_id", nullable = false)
+    @JsonBackReference
     private Denuncia denuncia;
 
     @ManyToOne
