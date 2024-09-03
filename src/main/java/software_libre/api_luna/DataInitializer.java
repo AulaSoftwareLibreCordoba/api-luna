@@ -7,7 +7,6 @@ import software_libre.api_luna.share.entity.Rol;
 import software_libre.api_luna.share.entity.Usuario;
 import software_libre.api_luna.share.repository.IRolRepository;
 import software_libre.api_luna.share.repository.IUserRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 

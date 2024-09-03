@@ -62,6 +62,15 @@ public class DenunciaService {
             if (denunciaAModificar.getActivo() != null) {
                 modificaciones.setActivo(denunciaAModificar.getActivo());
             }
+            if (denunciaAModificar.getCurso() != null){
+                modificaciones.setCurso(denunciaAModificar.getCurso());
+            }
+            if (denunciaAModificar.getLetra() != null){
+                modificaciones.setLetra(denunciaAModificar.getLetra());
+            }
+            if (denunciaAModificar.getDenunciantes() != null){
+                modificaciones.setDenunciantes(denunciaAModificar.getDenunciantes());
+            }
 
             return repositoryDenuncia.save(modificaciones);
         } else {
