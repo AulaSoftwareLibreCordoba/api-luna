@@ -15,48 +15,45 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import software_libre.api_luna.security.JwtAuthenticationFilter;
 import software_libre.api_luna.security.UserDetailsServiceImp;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserDetailsServiceImp userDetailsServiceImp;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+  private final UserDetailsServiceImp userDetailsServiceImp;
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(UserDetailsServiceImp userDetailsServiceImp,
-                          JwtAuthenticationFilter jwtAuthenticationFilter
-                          ) {
-        this.userDetailsServiceImp = userDetailsServiceImp;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
+  public SecurityConfig(UserDetailsServiceImp userDetailsServiceImp,
+                        JwtAuthenticationFilter jwtAuthenticationFilter) {
+    this.userDetailsServiceImp = userDetailsServiceImp;
+    this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+  }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        return http
-                .csrf(c -> c.disable())//csrf no lo necesitamos al ser puro back
-                .sessionManagement((s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)))//Control de sesion, no guardamos el estado ya que vamos a trabajar con token
-                .authorizeHttpRequests(h -> {
-                    h.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll();
-                    h.requestMatchers(HttpMethod.POST, "/authorization/login").permitAll();
-                    h.requestMatchers(HttpMethod.POST, "/authorization/register").permitAll();//TODO: si el controlador no crece mas lo dejamos como/* y un solo filtro
-                    //h.requestMatchers(HttpMethod.GET, "/test/*").permitAll();
-                    //h.anyRequest().authenticated();
-                    h.anyRequest().permitAll();//Se queda inhabilitado la seguridad durante el desarrollo
-                })
-                .userDetailsService(userDetailsServiceImp)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+    return http
+            .csrf(c -> c.disable()) // Deshabilitar CSRF para JWT
+            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sin estado
+            .authorizeHttpRequests(h -> {
+              // Configuración de rutas públicas
+              h.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll();
+              h.requestMatchers(HttpMethod.POST, "/login").permitAll();
+              h.requestMatchers(HttpMethod.POST, "/login/register").permitAll();
+              // Requiere autenticación para todas las demás rutas
+              h.anyRequest().authenticated();
+            })
+            .userDetailsService(userDetailsServiceImp)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
-
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    return configuration.getAuthenticationManager();
+  }
 }
