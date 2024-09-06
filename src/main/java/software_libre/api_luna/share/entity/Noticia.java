@@ -18,10 +18,8 @@ public class Noticia {
     private Long id;
 
     private String nombre;
-
     private String encabezado;
     private String texto;
-
     private LocalDateTime fechaValidez;
     private String activo;
 

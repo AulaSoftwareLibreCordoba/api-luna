@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import software_libre.api_luna.share.entity.Denuncia;
 import software_libre.api_luna.share.entity.Usuario;
 
 

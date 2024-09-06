@@ -6,9 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import software_libre.api_luna.share.enums.Curso;
 import software_libre.api_luna.share.enums.Letra;
+
 import java.time.LocalDateTime;
 import java.util.List;
-
 
 @Builder
 @Data
@@ -22,20 +22,13 @@ public class Denuncia {
     private long id;
 
     private String denunciantes;
-
     private Curso curso;
-
     private Letra letra;
-
     private String resumen;
-
     private LocalDateTime fechaCreacion;
-
     private String validado;
-
     private String activo;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EventoDenuncia> eventoDenuncias;
 
@@ -43,5 +36,4 @@ public class Denuncia {
     @JoinColumn(name = "usuario_id", nullable = false)
     @JsonBackReference
     private Usuario usuario;
-
 }

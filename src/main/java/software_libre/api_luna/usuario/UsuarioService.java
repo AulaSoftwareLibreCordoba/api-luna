@@ -21,7 +21,6 @@ public class UsuarioService {
   @Autowired
   private IRolRepository roleRepository;
 
-  @Transactional
   public Usuario guardarUsuario(Usuario usuario) {
     // Asegúrate de que los roles están en el estado gestionado
     List<Rol> roles = usuario.getRoles().stream()
@@ -33,12 +32,10 @@ public class UsuarioService {
     return userRepository.save(usuario);
   }
 
-  @Transactional
   public void borrarUsuarioPorUsuario(Usuario usuario) {
     userRepository.delete(usuario);
   }
 
-  @Transactional
   public void borrarUsuarioPorId(Long id) {
     userRepository.deleteById(id);
   }
@@ -51,7 +48,6 @@ public class UsuarioService {
     return userRepository.findById(id);
   }
 
-  @Transactional
   public Usuario actualizarUsuario(Long id, Usuario usuarioAModificar) {
     Optional<Usuario> usuarioOptional = userRepository.findById(id);
     if (usuarioOptional.isPresent()) {

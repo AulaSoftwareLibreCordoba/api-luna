@@ -2,8 +2,7 @@ package software_libre.api_luna.share.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -17,12 +16,10 @@ public class EventoDenuncia {
     private Long id;
 
     private LocalDateTime fechaCreacion;
-
     private String activo;
 
     @ManyToOne
     @JoinColumn(name = "denuncia_id", nullable = false)
-    @JsonBackReference
     private Denuncia denuncia;
 
     @ManyToOne
