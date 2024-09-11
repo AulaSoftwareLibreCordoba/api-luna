@@ -1,5 +1,7 @@
 package software_libre.api_luna.login;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import software_libre.api_luna.share.entity.Rol;
 import software_libre.api_luna.exceptions.CustomGenericException;
@@ -16,6 +18,8 @@ import java.util.List;
 @Service
 public class LoginService {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final IUserRepository userRepository;
     private final JwtService jwtService;
@@ -44,38 +48,20 @@ public class LoginService {
     }
 
     public String authenticate(LoginRequest loginRequest) {
+
         Usuario user = userRepository.findByEmail(loginRequest.getEmail());
-        Usuario fakeUser = Usuario
-                .builder()
-                .username("fakeUser8")
-                .email("fakeUser8@email.com")
-                .activo("Y")
-                .build();
 
-        List<Rol> fakeRoles = new ArrayList<>();
 
-        Rol fakeRol1 = Rol
-                .builder()
-                .nombre("alumno")
-                .activo("Y")
-                .build();
-
-        Rol fakeRol2 = Rol
-                .builder()
-                .nombre("profesor")
-                .activo("Y")
-                .build();
-
-        fakeRoles.add(fakeRol1);
-        fakeRoles.add(fakeRol2);
-
-        fakeUser.setRoles(fakeRoles);
-
-        if (user != null) {
-
-            return jwtService.generateToken(fakeUser);
+        if (user != null ) {
+            if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())){
+                return jwtService.generateToken(user);
+            }else {
+                throw new CustomGenericException(1001, "Contraseña incorrecta");
+            }
         }
-        throw new CustomGenericException(1000, "Usuario no concentrator");
+
+        throw new CustomGenericException(1000, "Usuario o contraseña incorrectos");
     }
+
 
 }

@@ -8,4 +8,6 @@ public interface IUserRepository extends JpaRepository<Usuario, Long> {
 
     @EntityGraph(attributePaths = {"roles"})//Con esta query forzamos un eagger loading
     Usuario findByEmail(String email);
+
+    Usuario findByUsername(String username);
 }

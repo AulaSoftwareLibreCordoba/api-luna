@@ -1,4 +1,20 @@
-Una vez ya teniendo la API iniciada (leer Readme en github) la API se divide de la siguiente forma:
+Una vez ya teniendo la API iniciada (leer Readme en github) hay que iniciar sesión o crear un nuevo usuario:
+En caso de que queramos crear un nuevo usuario se utiliza http://localhost:8080/login/register (importante usar el metodo POST) con el body
+{
+    "username":"",
+    "email":"",
+    "password":"",
+    "activo":""
+}
+el cual te creará un usuario sin roles (tenemos que terminarlo)
+
+En caso de que queramos hacer un simple login utilizamos http://localhost:8080/login (importante usar el metodo POST) con el body
+{
+    "email":"",
+    "password":""
+}
+
+Esto nos dará un token, si lo hemos echo correctamente, que nos permitirá manegar la api
 
 1. Denuncias:
 
@@ -9,15 +25,16 @@ http://localhost:8080/denuncias/{id} para que nos muestre la información de una
 Petición POST:
 Para la petición post utilizaremos la url http://localhost:8080/denuncias y en el body le enviaremos un JSON con la siguiente estructura
 {
-    "resumen": "",
-    "fechaCreacion": "",
-    "denunciantes":"",
+    "denunciantes": "",
     "curso": ,
     "letra": ,
+    "resumen": "",
+    "fechaCreacion": "2024-09-11T10:30:00",
     "validado": "",
     "activo": "",
-    "eventoDenuncias": [],
-    "usuario":{"id":}
+    "usuario": {
+        "id":
+    }
 }
 
 **

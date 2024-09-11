@@ -1,6 +1,7 @@
 package software_libre.api_luna.usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software_libre.api_luna.share.entity.Usuario;
@@ -21,6 +22,9 @@ public class UsuarioService {
   @Autowired
   private IRolRepository roleRepository;
 
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
   public Usuario guardarUsuario(Usuario usuario) {
     // Asegúrate de que los roles están en el estado gestionado
     List<Rol> roles = usuario.getRoles().stream()
@@ -29,6 +33,8 @@ public class UsuarioService {
             .collect(Collectors.toList());
 
     usuario.setRoles(roles);
+    String encodePassword = passwordEncoder.encode(usuario.getPassword());
+    usuario.setPassword(encodePassword);
     return userRepository.save(usuario);
   }
 

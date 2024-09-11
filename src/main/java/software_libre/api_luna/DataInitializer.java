@@ -3,6 +3,7 @@ package software_libre.api_luna;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import software_libre.api_luna.share.entity.Rol;
 import software_libre.api_luna.share.entity.Usuario;
 import software_libre.api_luna.share.repository.IRolRepository;
@@ -14,10 +15,12 @@ import java.util.List;
 public class DataInitializer {
   private final IRolRepository rolRepository;
   private final IUserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
-  public DataInitializer(IRolRepository rolRepository, IUserRepository userRepository) {
+  public DataInitializer(IRolRepository rolRepository, IUserRepository userRepository, PasswordEncoder passwordEncoder) {
     this.rolRepository = rolRepository;
     this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Bean
@@ -25,29 +28,43 @@ public class DataInitializer {
     return args -> {
       // Crear roles iniciales si no existen
       createRoleIfNotFound("USER");
+      createRoleIfNotFound("PROFESOR");
       createRoleIfNotFound("ADMIN");
       // Puedes agregar más roles si es necesario
 
-      createInitUserIfNotFound(1L);
+      createInitUserIfNotFound("root");
     };
   }
 
-  private void createInitUserIfNotFound(Long id) {
-    if (!userRepository.findById(id).isPresent()) {
-      // Obtener roles para el usuario
+  private void createInitUserIfNotFound(String username) {
+    if (userRepository.findByUsername(username) == null) {
+      // Obtener roles para el usuario y asegurarse de que están gestionados
       Rol adminRole = rolRepository.findByNombre("ADMIN");
+      Rol profesorRole = rolRepository.findByNombre("PROFESOR");
       Rol userRole = rolRepository.findByNombre("USER");
+
+      // Si alguno de los roles es null, significa que aún no existen en la base de datos.
+      if (adminRole != null) {
+        adminRole = rolRepository.saveAndFlush(adminRole);
+      }
+      if (profesorRole != null) {
+        profesorRole = rolRepository.saveAndFlush(profesorRole);
+      }
+      if (userRole != null) {
+        userRole = rolRepository.saveAndFlush(userRole);
+      }
 
       List<Rol> roles = new ArrayList<>();
       if (adminRole != null) roles.add(adminRole);
       if (userRole != null) roles.add(userRole);
+      if (profesorRole != null) roles.add(profesorRole);
 
-      // Crear el usuario
+      // Crear el usuario con los roles ya gestionados
       Usuario user = Usuario.builder()
-              .id(id)
-              .username("root")
-              .email(null)
-              .password("root")
+              .id(1L)
+              .username(username)
+              .email("root@root.root")
+              .password(passwordEncoder.encode("root"))
               .activo("yes")
               .roles(roles)
               .build();
@@ -56,6 +73,7 @@ public class DataInitializer {
       userRepository.save(user);
     }
   }
+
 
   private void createRoleIfNotFound(String roleName) {
     if (rolRepository.findByNombre(roleName) == null) {
