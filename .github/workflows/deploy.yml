@@ -15,7 +15,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t my-image:${{ github.sha }} .
+        docker build -t auladesoftwarelibre/api-image:${{ github.sha }} .
 
   deploy:
     runs-on: ubuntu-latest
@@ -29,7 +29,7 @@ jobs:
         SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
       run: |
         # Guarda la imagen como tar
-        docker save my-image:${{ github.sha }} | gzip > my-image.tar.gz
+        docker save auladesoftwarelibre/api-image:${{ github.sha }} | gzip > my-image.tar.gz
         
         # Conecta al servidor y transfiere la imagen
         scp -i $SERVER_SSH_KEY -o StrictHostKeyChecking=no my-image.tar.gz $SERVER_USER@$SERVER_HOST:/tmp/my-image.tar.gz
@@ -44,5 +44,5 @@ jobs:
           docker rm my-container || true
 
           # Ejecutar el nuevo contenedor
-          docker run -d --name my-container my-image:latest
+          docker run -d --name my-container -p 8080:8080 auladesoftwarelibre/api-image:latest
         EOF
