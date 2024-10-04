@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property resource="logback.properties"/>
+
+    <include resource="appenders.xml"/>
+
+    <root level="debug">
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

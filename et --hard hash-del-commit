@@ -1,0 +1,66 @@
+[33mcommit 40477082f835557a340a9d40a74bc247c1e358dd[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdeveloper[m[33m, [m[1;31morigin/developer[m[33m)[m
+Author: AlejandroMoralBermejo <alejandromoralbermejo@gmail.com>
+Date:   Tue Jul 16 11:56:52 2024 +0200
+
+    He creado la entidad de Categoria de la denuncia y he termiado todas las relaciones a excepccion de chat y linea
+
+[33mcommit 165c387ea740a5f8c8d89fb02af782966b8c4f26[m
+Merge: 1428fb1 37e14d3
+Author: AlejandroMoralBermejo <alejandromoralbermejo@gmail.com>
+Date:   Tue Jul 16 10:43:19 2024 +0200
+
+    Commit automatico diario
+
+[33mcommit 1428fb17dbc8a3b4aec71020d9053f4620e6f737[m
+Author: AlejandroMoralBermejo <alejandromoralbermejo@gmail.com>
+Date:   Tue Jul 16 10:06:48 2024 +0200
+
+    He terminado las relaciones entre las entidades faltantes
+
+[33mcommit ae4338e5bd5f64b8e83868dcaea9f516a0d07c5a[m
+Author: AlejandroMoralBermejo <alejandromoralbermejo@gmail.com>
+Date:   Tue Jul 16 10:03:17 2024 +0200
+
+    He terminado las relaciones entre las entidades faltantes
+
+[33mcommit 37e14d3f8d25bed34c1e1eb25ebda3eed3634530[m
+Author: fuceda <fransanchezuceda@gmail.com>
+Date:   Mon Jul 15 23:44:16 2024 +0200
+
+    Validacion token Ok
+
+[33mcommit ef0bead5829703a750065398edc2284949461148[m
+Author: fuceda <fransanchezuceda@gmail.com>
+Date:   Sun Jul 14 20:31:14 2024 +0200
+
+    Validacion token falta depurar
+
+[33mcommit ca37ae8dc4763d3e296f00ddba5fcf6d264d038c[m
+Author: fuceda <fransanchezuceda@gmail.com>
+Date:   Fri Jul 12 12:43:36 2024 +0200
+
+    JWT service emision de token OK
+
+[33mcommit 40de1f0930a686b845216dc67e0b9eef68f67f9c[m
+Author: fuceda <fransanchezuceda@gmail.com>
+Date:   Thu Jul 11 21:33:05 2024 +0200
+
+    conexion DDBB y creacion de login, falla el token aun
+
+[33mcommit c3d0c791e9b0d70b2a3e3e51312b8e801dad6216[m
+Author: fuceda <fransanchezuceda@gmail.com>
+Date:   Wed Jul 10 19:41:52 2024 +0200
+
+    entidades sin relaciones
+
+[33mcommit c70c348ad2bce8df9a459a0283e33ed73677fc73[m
+Author: fuceda <fransanchezuceda@gmail.com>
+Date:   Mon Jul 8 18:49:57 2024 +0200
+
+    init dev branch
+
+[33mcommit 6fc83032cde1be1d625f102de37aa79d7c568366[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: fuceda <fransanchezuceda@gmail.com>
+Date:   Mon Jul 8 18:41:36 2024 +0200
+
+    init porject
