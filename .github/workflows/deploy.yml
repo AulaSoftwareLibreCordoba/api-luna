@@ -1,26 +1,48 @@
-name: Deploy to Server
+name: Docker Deploy
 
 on:
   push:
     branches:
-      - master  # Puedes cambiar esto a la rama que prefieras
+      - master  # Cambia esto a la rama que prefieras
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Check out the repository
       uses: actions/checkout@v2
 
-    - name: Deploy to server via SSH
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        passphrase: ${{ secrets.SERVER_PASSPHRASE }}
-        script: |
-          cd /ruta/del/proyecto
-          git pull origin main
-          # Agrega otros comandos como compilar o reiniciar servicios
+    - name: Build Docker image
+      run: |
+        docker build -t my-image:${{ github.sha }} .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Transfer Docker image to server
+      env:
+        SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+      run: |
+        # Guarda la imagen como tar
+        docker save my-image:${{ github.sha }} | gzip > my-image.tar.gz
+        
+        # Conecta al servidor y transfiere la imagen
+        scp -i $SERVER_SSH_KEY -o StrictHostKeyChecking=no my-image.tar.gz $SERVER_USER@$SERVER_HOST:/tmp/my-image.tar.gz
+        
+        # Conéctate al servidor para cargar y ejecutar la imagen
+        ssh -i $SERVER_SSH_KEY -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
+          # Cargar la imagen desde el tar.gz
+          gunzip -c /tmp/my-image.tar.gz | docker load
+
+          # Detener y eliminar el contenedor existente
+          docker stop my-container || true
+          docker rm my-container || true
+
+          # Ejecutar el nuevo contenedor
+          docker run -d --name my-container my-image:latest
+        EOF
