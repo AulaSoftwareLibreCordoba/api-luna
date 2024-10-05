@@ -62,7 +62,7 @@ La petición DELETE:
 Esta petición podemos hacerla de dos maneras tanto enviando la id de la denuncia mediante la url http://localhost:8080/denuncias/{id} como con una instancia
 de la denuncia en caso de que dispongas de ella con la url http://localhost:8080/denuncias y petición tipo denuncias
 
-...
+
 
 
 2. Usuarios
