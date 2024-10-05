@@ -43,13 +43,22 @@ jobs:
           # Guarda la imagen como tar
           docker save auladesoftwarelibre/api-image:${{ github.sha }} | gzip > my-image.tar.gz
           
+          # Verifica que el archivo se creó correctamente
+          ls -lh my-image.tar.gz
+          
           # Conecta al servidor y transfiere la imagen
           scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa my-image.tar.gz $SERVER_USER@$SERVER_HOST:/tmp/my-image.tar.gz
           
           # Conéctate al servidor para cargar y ejecutar la imagen
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_HOST << 'EOF'
+            echo "Conectado al servidor: $(hostname)"
+            echo "Versión de Docker: $(docker --version)"
+            
             # Cargar la imagen desde el tar.gz
             gunzip -c /tmp/my-image.tar.gz | docker load
+            
+            # Verifica que la imagen se haya cargado
+            docker images
 
             # Detener y eliminar el contenedor existente
             docker stop my-container || true
