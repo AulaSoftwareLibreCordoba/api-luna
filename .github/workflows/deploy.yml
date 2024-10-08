@@ -28,6 +28,7 @@ jobs:
           sudo apt-get install -y sshpass
 
       - name: Set up environment variables
+        run: echo "Setting up environment variables"
         env:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
@@ -43,7 +44,9 @@ jobs:
           
           # Conecta al servidor y transfiere la imagen usando sshpass
           sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no my-image.tar.gz $SERVER_USER@$SERVER_HOST:/tmp/my-image.tar.gz
-          
+
+      - name: Deploy Docker container on the server
+        run: |
           # Conéctate al servidor para cargar y ejecutar la imagen
           sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
             echo "Conectado al servidor: $(hostname)"
