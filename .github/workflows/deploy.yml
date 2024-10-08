@@ -22,21 +22,16 @@ jobs:
     needs: build
 
     steps:
-      - name: Set up SSH
+      - name: Install sshpass
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+
+      - name: Set up environment variables
         env:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
-          SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
-        run: |
-          # Crear directorio .ssh
-          mkdir -p ~/.ssh
-          
-          # Guardar la clave SSH
-          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          
-          # Agregar el host a known_hosts
-          ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}  # Agrega la contraseña como un secreto en GitHub
 
       - name: Transfer Docker image to server
         run: |
@@ -46,11 +41,11 @@ jobs:
           # Verifica que el archivo se creó correctamente
           ls -lh my-image.tar.gz
           
-          # Conecta al servidor y transfiere la imagen
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa my-image.tar.gz $SERVER_USER@$SERVER_HOST:/tmp/my-image.tar.gz
+          # Conecta al servidor y transfiere la imagen usando sshpass
+          sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no my-image.tar.gz $SERVER_USER@$SERVER_HOST:/tmp/my-image.tar.gz
           
           # Conéctate al servidor para cargar y ejecutar la imagen
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_HOST << 'EOF'
+          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
             echo "Conectado al servidor: $(hostname)"
             echo "Versión de Docker: $(docker --version)"
             
