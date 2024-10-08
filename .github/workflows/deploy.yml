@@ -17,6 +17,14 @@ jobs:
         run: |
           docker build -t auladesoftwarelibre/api-image:${{ github.sha }} .
           
+      - name: List Docker images
+        run: docker images
+
+      - name: Save Docker image as tar.gz
+        run: |
+          docker save auladesoftwarelibre/api-image:${{ github.sha }} | gzip > my-image.tar.gz
+          ls -lh my-image.tar.gz  # Verifica que el archivo se creó
+
       - name: Echo image name
         run: |
           echo "Image name: auladesoftwarelibre/api-image:${{ github.sha }}"
@@ -36,18 +44,22 @@ jobs:
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
         run: |
-          # Guarda la imagen como tar
-          docker save auladesoftwarelibre/api-image:${{ github.sha }} | gzip > my-image.tar.gz
-  
           # Verifica que el archivo se creó correctamente
           ls -lh my-image.tar.gz
-  
+          
           # Conecta al servidor y transfiere la imagen usando sshpass
           sshpass -p $SERVER_PASSWORD scp -o StrictHostKeyChecking=no my-image.tar.gz $SERVER_USER@$SERVER_HOST:/tmp/my-image.tar.gz
-  
-          # Conéctate al servidor y carga la imagen
+          
+          # Verifica que el archivo se transfirió correctamente
+          sshpass -p $SERVER_PASSWORD ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST 'ls -lh /tmp/my-image.tar.gz'
+
+      - name: Load Docker image on server
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        run: |
           sshpass -p $SERVER_PASSWORD ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
-            # Comprobar si el archivo existe antes de cargar
             if [ -f /tmp/my-image.tar.gz ]; then
               echo "Cargando imagen..."
               gunzip -c /tmp/my-image.tar.gz | docker load
@@ -56,14 +68,37 @@ jobs:
               echo "El archivo no se encontró. No se puede cargar la imagen."
               exit 1
             fi
-  
-            # Verifica que la imagen se haya cargado
-            docker images
-  
-            # Detener y eliminar el contenedor existente
+            docker images  # Verifica que la imagen se haya cargado
+          EOF
+
+      - name: Stop and remove existing container
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        run: |
+          sshpass -p $SERVER_PASSWORD ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
             docker stop my-container || true
             docker rm my-container || true
-  
-            # Ejecutar el nuevo contenedor
+          EOF
+
+      - name: Run new container
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        run: |
+          sshpass -p $SERVER_PASSWORD ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
             docker run -d --name my-container -p 8080:8080 auladesoftwarelibre/api-image:${{ github.sha }} || echo "Error al ejecutar el contenedor"
+            docker ps -a  # Verifica que el contenedor esté en ejecución
+          EOF
+
+      - name: Check logs of the container
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        run: |
+          sshpass -p $SERVER_PASSWORD ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
+            docker logs my-container || echo "No se pudo obtener logs. El contenedor podría no estar en ejecución."
           EOF
