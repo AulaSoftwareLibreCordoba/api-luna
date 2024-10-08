@@ -3,7 +3,7 @@ name: Docker Deploy
 on:
   push:
     branches:
-      - master  # Cambia esto a la rama que prefieras
+      - master
 
 jobs:
   build:
@@ -23,38 +23,31 @@ jobs:
 
     steps:
       - name: Install sshpass
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y sshpass
+        run: sudo apt-get install -y sshpass
 
-      - name: Set up environment variables
-        run: echo "Setting up environment variables"
+      - name: Transfer Docker image to server
         env:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
-          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}  # Agrega la contraseña como un secreto en GitHub
-
-      - name: Transfer Docker image to server
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
         run: |
           # Guarda la imagen como tar
           docker save auladesoftwarelibre/api-image:${{ github.sha }} | gzip > my-image.tar.gz
-          
+
           # Verifica que el archivo se creó correctamente
           ls -lh my-image.tar.gz
-          
-          # Conecta al servidor y transfiere la imagen usando sshpass
-          sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no my-image.tar.gz $SERVER_USER@$SERVER_HOST:/tmp/my-image.tar.gz
 
-      - name: Deploy Docker container on the server
-        run: |
-          # Conéctate al servidor para cargar y ejecutar la imagen
-          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
+          # Conecta al servidor y transfiere la imagen usando sshpass
+          sshpass -p $SERVER_PASSWORD scp -o StrictHostKeyChecking=no my-image.tar.gz $SERVER_USER@$SERVER_HOST:/tmp/my-image.tar.gz
+
+          # Conéctate al servidor y carga la imagen
+          sshpass -p $SERVER_PASSWORD ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
             echo "Conectado al servidor: $(hostname)"
             echo "Versión de Docker: $(docker --version)"
             
             # Cargar la imagen desde el tar.gz
             gunzip -c /tmp/my-image.tar.gz | docker load
-            
+
             # Verifica que la imagen se haya cargado
             docker images
 
