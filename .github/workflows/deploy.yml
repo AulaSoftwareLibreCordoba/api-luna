@@ -16,6 +16,11 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t auladesoftwarelibre/api-image:${{ github.sha }} .
+          
+      - name: Echo image name
+        run: |
+          echo "Image name: auladesoftwarelibre/api-image:${{ github.sha }}"
+          echo "SHA: ${{ github.sha }}"
 
   deploy:
     runs-on: ubuntu-latest
@@ -62,4 +67,3 @@ jobs:
             # Ejecutar el nuevo contenedor
             docker run -d --name my-container -p 8080:8080 auladesoftwarelibre/api-image:${{ github.sha }} || echo "Error al ejecutar el contenedor"
           EOF
-
